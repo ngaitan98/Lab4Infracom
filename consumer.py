@@ -10,8 +10,8 @@ app = Flask(__name__)
 
 @app.route('/video', methods=['GET'])
 def video():
-
 	topic = str(request.remote_addr)
+	print("Nuevo cliente: " + topic)
 	os.system("producer.py " + topic)
 	consumer = KafkaConsumer(
     topic, 
