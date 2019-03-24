@@ -12,7 +12,7 @@ app = Flask(__name__)
 def video():
 	topic = str(request.remote_addr)
 	print("Nuevo cliente: " + topic)
-	os.system("producer.py " + topic)
+	os.system("python producer.py " + topic)
 	consumer = KafkaConsumer(topic, bootstrap_servers=['localhost:9092'])
 	return Response(get_video_stream(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
