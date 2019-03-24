@@ -3,6 +3,7 @@ import time
 import cv2
 from kafka import KafkaProducer
 
+
 def publish_video(video_file, ip):
     producer = KafkaProducer(bootstrap_servers='localhost:9092')
     topic = ip
