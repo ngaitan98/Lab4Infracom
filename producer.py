@@ -12,6 +12,7 @@ def publish_video(video_file, ip):
     print('publishing video...')
     while(video.isOpened()):
         success, frame = video.read()
+        print(frame)
         if not success:
             print("bad read!")
             break        

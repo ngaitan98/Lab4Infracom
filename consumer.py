@@ -14,9 +14,9 @@ def video():
 	print("Nuevo cliente: " + topic)
 	os.system("python producer.py " + topic)
 	consumer = KafkaConsumer(topic, bootstrap_servers=['localhost:9092'])
-	return Response(get_video_stream(), mimetype='multipart/x-mixed-replace; boundary=frame')
+	return Response(get_video_stream(consumer), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-def get_video_stream():
+def get_video_stream(consumer):
 	for msg in consumer:
 		yield (b'--frame\r\n'
 			b'Content-Type: image/jpg\r\n\r\n' + msg.value + b'\r\n\r\n')
