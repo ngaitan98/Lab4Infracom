@@ -32,6 +32,7 @@ def get_video_stream(consumer, client):
 		yield (b'--frame\r\n'
 			b'Content-Type: image/jpg\r\n\r\n' + msg.value + b'\r\n\r\n')
 	clients.remove(client)
+	print("Bye, bye " + client.ip)
 
 def executeProducer(topic):
 	os.system("python producer.py " + topic)
