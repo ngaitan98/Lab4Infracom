@@ -19,17 +19,19 @@ def video():
 	if len(clients) > maxSupport or timesVisited >= 30:
 		print("Try Again Later")
 		return
-	clients.append(Client(topic))
+	newConnection = Client(topic)
+	clients.append(newConnection)
 	topic = topic + str(timesVisited + 1)
 	print("New Client: " + topic)
 	Thread(target = executeProducer, args = [topic]).start()
 	consumer = KafkaConsumer(topic, bootstrap_servers=['localhost:9092'])
-	return Response(get_video_stream(consumer), mimetype='multipart/x-mixed-replace; boundary=frame')
+	return Response(get_video_stream(consumer,newConnection), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 def get_video_stream(consumer, client):
 	for msg in consumer:
 		yield (b'--frame\r\n'
 			b'Content-Type: image/jpg\r\n\r\n' + msg.value + b'\r\n\r\n')
+	clients.remove(client)
 
 def executeProducer(topic):
 	os.system("python producer.py " + topic)
