@@ -17,7 +17,7 @@ def publish_video(video_file, ip):
             break        
         ret, buffer = cv2.imencode('.jpg', frame)
         byteArray = buffer.tobytes()
-        print(byteArray)
+        time.sleep(0.01)
         producer.send(topic, byteArray)
 
     video.release()
