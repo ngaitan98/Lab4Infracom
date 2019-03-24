@@ -23,5 +23,5 @@ def publish_video(video_file, ip):
     print('publish complete')
 
 if __name__ == '__main__':
-    video_path = 'y2mate.com - stranger_things_season_3_official_trailer_hd_netflix_YEG3bmU_WaI_1080p.mp4'
+    video_path = 'The 30-Second Video.mp4'
     publish_video(video_path, sys.argv[1])
