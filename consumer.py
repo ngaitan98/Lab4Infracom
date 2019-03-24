@@ -1,12 +1,8 @@
 import datetime
-from flask import Flask, Response
+import os
+from flask import Flask, Response, request
 from kafka import KafkaConsumer
 
-topic = "streaming"
-
-consumer = KafkaConsumer(
-    topic, 
-    bootstrap_servers=['localhost:9092'])
 
 
 # Set the consumer in a Flask App
@@ -15,6 +11,11 @@ app = Flask(__name__)
 @app.route('/video', methods=['GET'])
 def video():
 
+	topic = str(request.remote_addr)
+	os.system("producer.py " + topic)
+	consumer = KafkaConsumer(
+    topic, 
+    bootstrap_servers=['localhost:9092'])
     return Response(
         get_video_stream(), 
         mimetype='multipart/x-mixed-replace; boundary=frame')

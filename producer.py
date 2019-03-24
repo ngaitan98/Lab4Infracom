@@ -3,11 +3,9 @@ import time
 import cv2
 from kafka import KafkaProducer
 
-topic = "streaming"
-
-def publish_video(video_file):
+def publish_video(video_file, ip):
     producer = KafkaProducer(bootstrap_servers='localhost:9092')
-
+    topic = ip
     video = cv2.VideoCapture(video_file)
     
     print('publishing video...')
@@ -25,4 +23,4 @@ def publish_video(video_file):
 
 if __name__ == '__main__':
     video_path = 'y2mate.com - stranger_things_season_3_official_trailer_hd_netflix_YEG3bmU_WaI_1080p.mp4'
-    publish_video(video_path)
+    publish_video(video_path, sys.argv[1])
