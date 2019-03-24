@@ -13,6 +13,7 @@ def video():
 	topic = str(request.remote_addr)
 	print("Nuevo cliente: " + topic)
 	os.system("python producer.py " + topic)
+	print('Disfrute pez')
 	consumer = KafkaConsumer(topic, bootstrap_servers=['localhost:9092'])
 	return Response(get_video_stream(consumer), mimetype='multipart/x-mixed-replace; boundary=frame')
 

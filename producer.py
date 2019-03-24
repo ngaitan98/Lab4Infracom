@@ -9,10 +9,9 @@ def publish_video(video_file, ip):
     topic = ip
     video = cv2.VideoCapture(video_file)
     
-    print('publishing video...')
+    print('publishing video... for client ' + topic)
     while(video.isOpened()):
         success, frame = video.read()
-        print(frame)
         if not success:
             print("bad read!")
             break        
