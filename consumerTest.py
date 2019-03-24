@@ -4,41 +4,25 @@ from flask import Flask, Response, request
 from kafka import KafkaConsumer
 from threading import Thread
 
+
+# Set the consumer in a Flask App
 app = Flask(__name__)
 
-maxSupport = 160
-clients = []
-
-class Client:
-	def __init__(self, ip):
-		self.ip = ip
 @app.route('/video', methods=['GET'])
 def video():
 	topic = str(request.remote_addr)
-	timesVisited =countClientsByIp(topic)
-	if len(clients) > maxSupport or timesVisited >= 30:
-		print("Try Again Later")
-		return
-	clients.append(Client(topic))
-	topic = topic + str(timesVisited + 1)
-	print("New Client: " + topic)
+	print("Nuevo cliente: " + topic)
 	Thread(target = executeProducer, args = [topic]).start()
+	print('Disfrute pez')
 	consumer = KafkaConsumer(topic, bootstrap_servers=['localhost:9092'])
 	return Response(get_video_stream(consumer), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-def get_video_stream(consumer, client):
+def get_video_stream(consumer):
 	for msg in consumer:
 		yield (b'--frame\r\n'
 			b'Content-Type: image/jpg\r\n\r\n' + msg.value + b'\r\n\r\n')
-
 def executeProducer(topic):
 	os.system("python producer.py " + topic)
 
-def countClientsByIp(ip):
-	count = 0
-	for client in clients:
-		if client.ip == ip:
-			count = count + 1
-	return count
 if __name__ == "__main__":
 	app.run(host='0.0.0.0', debug=True)

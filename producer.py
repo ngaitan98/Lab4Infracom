@@ -16,6 +16,7 @@ def publish_video(video_file, ip):
             print("bad read!")
             break        
         ret, buffer = cv2.imencode('.jpg', frame)
+        print(topic + buffer.toBytes())
         producer.send(topic, buffer.tobytes())
 
     video.release()
